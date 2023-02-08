@@ -9,8 +9,6 @@ on:
 jobs:
   build-linux-gnu:
     name: release artifacts
-    needs:
-      - release
     strategy:
       matrix:
         extension_name:
