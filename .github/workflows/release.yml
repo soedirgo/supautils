@@ -7,6 +7,26 @@ on:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ github.ref }}
+          body: |
+            Changes in this Release
+            - First Change
+            - Second Change
+          draft: false
+          prerelease: false
+
   build-linux-gnu:
     name: release artifacts
     strategy:
@@ -17,6 +37,8 @@ jobs:
         box:
           - { runner: ubuntu-20.04, arch: amd64 }
     runs-on: ${{ matrix.box.runner }}
+    permissions:
+      packages: write
     steps:
       - uses: actions/checkout@v3
 
@@ -73,9 +95,11 @@ jobs:
         run: echo UPLOAD_URL=$(curl --silent https://api.github.com/repos/${{ github.repository }}/releases/latest | jq .upload_url --raw-output) >> $GITHUB_ENV
 
       - name: Upload release asset
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          path: ./${{ matrix.extension_name }}-${{ github.ref_name }}-pg${{ matrix.postgres }}-${{ matrix.box.arch }}-linux-gnu.deb
-          name: ${{ matrix.extension_name }}-${{ github.ref_name }}-pg${{ matrix.postgres }}-${{ matrix.box.arch }}-linux-gnu.deb
+          upload_url: ${{ env.UPLOAD_URL }}
+          asset_path: ./${{ matrix.extension_name }}-${{ github.ref_name }}-pg${{ matrix.postgres }}-${{ matrix.box.arch }}-linux-gnu.deb
+          asset_name: ${{ matrix.extension_name }}-${{ github.ref_name }}-pg${{ matrix.postgres }}-${{ matrix.box.arch }}-linux-gnu.deb
+          asset_content_type: application/vnd.debian.binary-package
