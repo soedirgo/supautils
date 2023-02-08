@@ -6,12 +6,13 @@ on:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
+permissions:
+  contents: write
+
 jobs:
   release:
     name: Create Release
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/create-release@v1
@@ -39,9 +40,6 @@ jobs:
         box:
           - { runner: ubuntu-20.04, arch: amd64 }
     runs-on: ${{ matrix.box.runner }}
-    permissions:
-      contents: read
-      packages: write
     steps:
       - uses: actions/checkout@v3
 
