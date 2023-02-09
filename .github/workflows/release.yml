@@ -31,7 +31,7 @@ jobs:
       matrix:
         extension_name:
           - supautils
-        postgres: [12, 13, 14, 15]
+        postgres: [12]
         box:
           - { runner: ubuntu-20.04, arch: amd64 }
     runs-on: ${{ matrix.box.runner }}
@@ -50,7 +50,7 @@ jobs:
           sudo apt-get update
 
           # Install requested postgres version
-          sudo apt install -y postgresql-${{ matrix.postgres }} postgresql-server-dev-${{ matrix.postgres }} -y
+          sudo apt-get install -y --no-install-recommends postgresql-${{ matrix.postgres }} postgresql-server-dev-${{ matrix.postgres }}
 
           # Ensure installed pg_config is first on path
           export PATH=$PATH:/usr/lib/postgresql/${{ matrix.postgres }}/bin
@@ -60,7 +60,9 @@ jobs:
           sudo apt-get install -y --no-install-recommends clang-11 llvm-11
 
           # Build supautils
-          CC=clang-11 make
+          export CC=clang-11
+          export PATH="$GITHUB_WORKSPACE/pgsql/bin:$PATH"
+          make
 
           # name of the package directory before packaging
           package_dir=${{ matrix.extension_name }}-${{ github.ref_name }}-pg${{ matrix.postgres }}-${{ matrix.box.arch }}-linux-gnu
