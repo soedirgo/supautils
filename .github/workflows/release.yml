@@ -56,8 +56,8 @@ jobs:
           # Install supautils dependencies
           sudo apt-get install -y --no-install-recommends libicu-dev
 
-          which pg_config
-          which clang
+          which pg_config-12
+          which clang-11
           which gcc
 
       # - name: build release artifacts
