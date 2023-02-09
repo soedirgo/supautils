@@ -57,6 +57,7 @@ jobs:
 
           # Install supautils dependencies
           sudo apt-get install -y --no-install-recommends libicu-dev
+          sudo apt-get remove -y gcc g++
           sudo apt-get install -y --no-install-recommends clang-11 llvm-11
 
           # Build supautils
