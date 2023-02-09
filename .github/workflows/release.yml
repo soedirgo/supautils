@@ -51,13 +51,12 @@ jobs:
           sudo apt-get install -y --no-install-recommends postgresql-${{ matrix.postgres }} postgresql-server-dev-${{ matrix.postgres }}
 
           # Ensure installed pg_config is first on path
-          export PATH=$PATH:/usr/lib/postgresql/${{ matrix.postgres }}/bin
+          export PATH="/usr/lib/postgresql/${{ matrix.postgres }}/bin:$PATH"
 
           # Install supautils dependencies
           sudo apt-get install -y --no-install-recommends libicu-dev
 
           # Build supautils
-          export CC=clang-11
           make
 
           # name of the package directory before packaging
