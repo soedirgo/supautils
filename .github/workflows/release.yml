@@ -41,6 +41,12 @@ jobs:
       - run: |
           sudo apt list --installed
 
+      - run: |
+          clang --version
+
+      - run: |
+          env
+
       - name: build release artifacts
         run: |
           # Add postgres package repo
