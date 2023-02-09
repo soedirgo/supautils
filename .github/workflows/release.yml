@@ -38,9 +38,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - run: |
-          echo "$CC" "$CXX"
-
       - name: build release artifacts
         run: |
           # Add postgres package repo
