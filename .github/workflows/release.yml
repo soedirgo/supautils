@@ -50,15 +50,15 @@ jobs:
           sudo apt-get install -y --no-install-recommends clang-11 llvm-11
           sudo apt-get install -y --no-install-recommends postgresql-${{ matrix.postgres }} postgresql-server-dev-${{ matrix.postgres }}
 
+          # Install supautils dependencies
+          sudo apt-get install -y --no-install-recommends libicu-dev
+
           ls -lah /usr/lib/postgresql/12/bin
 
-          # # Ensure installed pg_config is first on path
-          # export PATH=$PATH:/usr/lib/postgresql/${{ matrix.postgres }}/bin
+          # Ensure installed pg_config is first on path
+          export PATH=$PATH:/usr/lib/postgresql/${{ matrix.postgres }}/bin
 
-          # # Install supautils dependencies
-          # sudo apt-get install -y --no-install-recommends libicu-dev
-
-          # pg_config
+          pg_config
 
       # - name: build release artifacts
       #   run: |
