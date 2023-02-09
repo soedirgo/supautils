@@ -38,6 +38,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
+      - run: |
+          echo "$CC" "$CXX"
+
       - name: build release artifacts
         run: |
           # Add postgres package repo
@@ -47,6 +50,7 @@ jobs:
           sudo apt-get update
 
           # Install requested postgres version
+          sudo apt-get remove -y gcc g++ clang
           sudo apt-get install -y --no-install-recommends clang-11 llvm-11
           sudo apt-get install -y --no-install-recommends postgresql-${{ matrix.postgres }} postgresql-server-dev-${{ matrix.postgres }}
 
@@ -58,6 +62,7 @@ jobs:
 
           # Build supautils
           export CC=clang-11
+          export CXX=clang++-11
           make
 
           # name of the package directory before packaging
