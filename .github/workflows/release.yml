@@ -62,7 +62,7 @@ jobs:
           # Build supautils
           export CC=clang-11
           export PATH="$GITHUB_WORKSPACE/pgsql/bin:$PATH"
-          make
+          make USE_PGXS=1
 
           # name of the package directory before packaging
           package_dir=${{ matrix.extension_name }}-${{ github.ref_name }}-pg${{ matrix.postgres }}-${{ matrix.box.arch }}-linux-gnu
