@@ -56,7 +56,7 @@ jobs:
           ls -lah /usr/lib/postgresql/12/bin
 
           # Ensure installed pg_config is first on path
-          export PATH=$PATH:/usr/lib/postgresql/${{ matrix.postgres }}/bin
+          export PATH="/usr/lib/postgresql/${{ matrix.postgres }}/bin:$PATH"
 
           pg_config
 
